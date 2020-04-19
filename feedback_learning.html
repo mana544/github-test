@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <script src="https://unpkg.com/konva@4.2.2/konva.min.js"></script>
+    <meta charset="utf-8" />
+    <title>HTML Canvas Demo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+    </style>
+    <script language="javascript" type="text/javascript">
+
+        function list2linepoints(line_x, line_y){
+            line_ans = [];
+
+            for (let i = 0; i < line_x.length; i++) {
+                line_ans.push(line_x[i]);
+                line_ans.push(line_y[i]);
+            }
+
+            return line_ans
+        }
+
+        /**
+         * Value[-2, 2] -> Y軸方向のpixcel値への座標変換をします。
+         */
+         function val2pix(inval) {
+            // 2 -> 0
+            // -2 -> 1000
+            const a = -250;
+            const b = 500;
+
+            return inval * a + b;
+        }
+
+        /**
+         * Y軸方向のpixcel値 -> Value[-2, 2] への座標変換をします。
+         */
+         function pix2val(inval) {
+            // 0 -> 2
+            // 1000 -> -2
+            const a = -1/1000;
+            const b = 2;
+
+            return inval * a + b;
+        }
+
+
+        function OnLinkClick() {
+
+            redLine.points(list2linepoints(line_x,line_y))
+            console.log(A);
+            chartLyr.draw();
+        }
+
+    </script>
+    </head>
+    <body>
+        <a href="javascript:OnLinkClick();">押して！</a>
+        <div id="container"></div>
+        <script>
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+
+            var stage = new Konva.Stage({
+                container: 'container',
+                width: width,
+                height: height
+            });
+
+            // グラフ土台レイヤー chartLyr
+            var chartLyr = new Konva.Layer();
+            // ライン描画レイヤー lineLyr
+            var lineLyr = new Konva.Layer();
+            // スライダー&ボタンコントロールレイヤー ctrLyr
+            var ctrLyr = new Konva.Layer();
+
+            // テキスト
+            var simpleText = new Konva.Text({
+                x: stage.width() / 2,
+                y: 15,
+                text: 'Simple Text',
+                fontSize: 30,
+                fontFamily: 'Calibri',
+                fill: 'green'
+            });
+
+            // グラフエリア
+            var chartArea = new Konva.Rect({
+                x: 0,
+                y: 100,
+                width: 1000,
+                height: 800,
+                fill: '#e0e0e0',
+                stroke: 'black',
+                strokeWidth: 4
+            });
+            // Y軸目盛り線
+            var gridLineY = new Konva.Line({
+                points: [0, 500, 1000, 500],
+                stroke: 'purple',
+                strokeWidth: 2,
+                lineJoin: 'round',
+                /*
+                * line segments with a length of 33px
+                * with a gap of 10px
+                */
+                dash: [10, 5]
+            })
+            // スライダー
+            var sliderCtr = new Konva.Rect({
+                x: 1100,
+                y: 500,
+                width: 100,
+                height: 50,
+                fill: '#e0e0e0',
+                stroke: '#808080',
+                cornerRadius: 20,
+                strokeWidth: 4,
+                shadowColor: 'black',
+                shadowBlur: 5,
+                shadowOffsetX: 5,
+                shadowOffsetY: 5,
+                shadowOpacity: 0.5,
+                draggable: true
+
+            })
+            sliderCtr.offsetX(sliderCtr.width()/2);
+            sliderCtr.offsetY(sliderCtr.height()/2);
+            // スライダー土台
+            var sliderRail = new Konva.Rect({
+                x: 1100,
+                y: 500,
+                width: 20,
+                height: 760,
+                fill: '#808080',
+                stroke: '#c0c0c0',
+                cornerRadius: 20,
+                strokeWidth: 2,
+                draggable: true
+
+            })
+            sliderRail.offsetX(sliderRail.width()/2);
+            sliderRail.offsetY(sliderRail.height()/2);
+            sliderCtr.on('dragstart', function(){
+                // simpleText.text('start');
+                ctrLyrAnim.stop();
+            });
+            sliderCtr.on('dragmove', function(){
+                // simpleText.text('move');
+                // x軸方向には動かさない
+                this.x(1100);
+                // Y軸方向の制限
+                const upperBound = val2pix(1.5);
+                const lowerBound = val2pix(-1.5);
+                if (this.y() <= upperBound) {
+                    this.y(upperBound)
+                }else if (this.y() >= lowerBound) {
+                    this.y(lowerBound)
+                }
+            });
+            sliderCtr.on('dragend', function(){
+                // simpleText.text('end');
+                ctrLyrAnim.start();
+            });
+            
+            // tooltip
+            var tooltip = new Konva.Label({
+                x: 655,
+                y: 75,
+                opacity: 0.75
+            });
+            // [22]
+
+            tooltip.add(
+                new Konva.Tag({
+                    fill: 'white',
+                    stroke: '#e03030',
+                    strokeWidth: 4,
+                    pointerDirection: 'down',
+                    pointerWidth: 50,
+                    pointerHeight: 30,
+                    lineJoin: 'round'
+                    // shadowColor: 'black',
+                    // shadowBlur: 10,
+                    // shadowOffsetX: 10,
+                    // shadowOffsetY: 10,
+                    // shadowOpacity: 0.5
+                })
+            );
+
+            tooltip.add(
+                new Konva.Text({
+                    text: 'Signal',
+                    fontFamily: 'Helvetica Neue',
+                    fontSize: 40,
+                    padding: 10,
+                    fill: '#e03030'
+                })
+            );
+
+
+
+            console.log(tooltip.getTag());
+            
+            
+
+
+
+            var t_old = 0;
+            const fps = 12;
+            var line_x = [985, 970, 955, 940, 925, 910, 895, 880, 865, 850, 835, 820, 805, 790, 775, 760, 745, 730, 715, 700, 685, 670, 655, 640, 625, 610, 595, 580, 565, 550, 535, 520, 505, 490, 475, 460, 445, 430, 415, 400, 385, 370, 355, 340, 325, 310, 295, 280, 265, 250, 235, 220, 205, 190, 175, 160, 145, 130, 115, 100, 85, 70, 55, 40, 25, 10];
+            // line_yの初期化
+            var line_y = [];
+            for (let i = 0; i < line_x.length; i++) {
+                line_y.push(val2pix(0));
+            }
+            // redLine
+            var redLine = new Konva.Line({
+                points: list2linepoints(line_x,line_y),
+                stroke: 'red',
+                strokeWidth: 10,
+                lineCap: 'round',
+                lineJoin: 'round',
+                tension : 0.3
+            });
+
+            // ラインレイヤーAnimationオブジェクトの生成
+            // 常時アニメーション計算する。
+            // ただし、fpsで指定したフレームレートにダウンサンプリング
+            var lineLyrAnim = new Konva.Animation(function(frame){
+                var t = frame.time / 1000;
+
+                if (t_old + (1/fps) <= t) {
+
+                    // 値の計算
+                    y = sliderCtr.y();
+                    // リストに挿入
+                    line_y.unshift(y);
+                    line_y.pop();
+
+                    // ラインのpointsを更新
+                    redLine.points(list2linepoints(line_x,line_y))
+                    tooltip.y(line_y[22])
+
+                    // simpleText.text(t);
+
+                    t_old = t;
+                }
+
+
+            }, lineLyr);
+
+            var target = 500;
+            
+            // コントロールレイヤーAnimationオブジェクトの生成
+            // ドラッグ開始時にアニメーション停止
+            // ドラッグOFF時にアニメーションスタート
+            var ctrLyrAnim = new Konva.Animation(function(frame){
+                var t = frame.time / 1000;
+
+                    // 値の計算
+                    var sliderY_old = sliderCtr.y();
+                    var y = Math.floor(((sliderY_old - target)*0.97 + target)*100)/100;
+
+                    sliderCtr.y(y);
+
+                    simpleText.text(y);
+
+            }, ctrLyr);
+            
+
+            chartLyr.add(chartArea);
+            chartLyr.add(gridLineY);
+            chartLyr.add(sliderRail);
+
+            lineLyr.add(simpleText);
+            lineLyr.add(redLine);
+            lineLyr.add(tooltip);
+            
+            ctrLyr.add(sliderCtr);
+
+            // add the layer to the stage
+            stage.add(chartLyr);
+            stage.add(lineLyr);
+            stage.add(ctrLyr);
+            lineLyrAnim.start();
+        </script>
+    </body>
+</html>

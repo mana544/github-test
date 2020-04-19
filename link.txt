@@ -1,0 +1,13 @@
+
+
+node.jsインストール
+
+https://konvajs.org/api/Konva.Text.html#main
+https://konvajs.org/docs/shapes/Label.html
+https://konvajs.org/api/Konva.Rect.html#main
+
+
+https://edge.sincar.jp/web/base64-inline-image/
+https://qiita.com/yasumodev/items/e1708f01ff87692185cd
+
+
