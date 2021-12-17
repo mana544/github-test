@@ -1,7 +1,7 @@
 name: Run MATLAB Tests
 on: [push]
 jobs:
-  my-job:
+  job1:
     name: Run MATLAB Tests and Generate Artifacts
     runs-on: ubuntu-latest
     steps:
@@ -21,6 +21,13 @@ jobs:
         with:
           name: my-artifact
           path: artifacts/
+
+  job2:
+    name: Publish Test Report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
 
       - name: Download artifact
         uses: actions/download-artifact@v2
