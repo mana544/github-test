@@ -2,7 +2,8 @@ classdef TestCarpet < matlab.unittest.TestCase
     properties (TestParameter)
         type = {'single','double','uint16'};
         level = struct('small',2,'medium',4,'large',6);
-        side = struct('small',9,'medium',81,'large',729);
+        side = struct('small',9,'medium',81,'large',72);
+%         side = struct('small',9,'medium',81,'large',729);
     end
     
     methods (Test)
