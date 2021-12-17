@@ -1,6 +1,7 @@
 name: Run MATLAB Tests
 on:
-  push:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
     branches:
       - tmp
 jobs:
