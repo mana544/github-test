@@ -18,6 +18,7 @@ jobs:
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
+        if: always() # always run even if the previous step fails
         with:
           name: my-artifact
           path: artifacts/
@@ -26,6 +27,7 @@ jobs:
     name: Publish Test Report
     runs-on: ubuntu-latest
     needs: job1
+    if: always() # always run even if the previous step fails
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
