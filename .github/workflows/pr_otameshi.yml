@@ -23,7 +23,10 @@ jobs:
       PR_4: ${{ github.event.number }}
 
       # イベントトリガーした人のログイン名
-      PR_6: ${{ github.event.sender.login }}
+      PR_5: ${{ github.event.sender.login }}
+
+      # イベントトリガーした人のURL
+      PR_6: ${{ github.event.sender.html_url }}
 
       # senderオブジェクト
       PR_7: ${{ toJSON(github.event.sender) }}
@@ -40,6 +43,7 @@ jobs:
           echo "PR_2 : $PR_2"
           echo "PR_3 : $PR_3"
           echo "PR_4 : $PR_4"
+          echo "PR_5 : $PR_5"
           echo "PR_6 : $PR_6"
           echo "PR_8 : $PR_8"
 
