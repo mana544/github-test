@@ -1,0 +1,19 @@
+name: PR Branch check
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+
+jobs:
+  job1:
+    name: Check job
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check branch
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const script = require('./.github/workflows/pr_branch_check.js')
+            script({github, context})
+
