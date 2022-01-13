@@ -9,6 +9,9 @@ jobs:
     env:
       PR_2: ${{ github.event.action }}
       PR_3: ${{ github.event_name }}
+      PR_4: ${{ github.event.number }}
+      PR_5: ${{ github.event.sender.id }}
+      PR_6: ${{ github.event.sender.login }}
     steps:
       - name: Display Info
         run: |
@@ -17,6 +20,9 @@ jobs:
           echo "GITHUB_HEAD_REF : $GITHUB_HEAD_REF"
           echo "PR_2 : $PR_2"
           echo "PR_3 : $PR_3"
+          echo "PR_4 : $PR_4"
+          echo "PR_5 : $PR_5"
+          echo "PR_6 : $PR_6"
 
 
 
