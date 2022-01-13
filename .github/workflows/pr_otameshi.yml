@@ -38,6 +38,9 @@ jobs:
       # PR URL
       PR_8: ${{ github.event.pull_request.html_url }}
 
+      # base ref
+      PR_9: ${{ github.event.pull_request.base.ref }}
+
     steps:
       - name: Display Info
         run: |
@@ -50,6 +53,7 @@ jobs:
           echo "PR_5 : $PR_5"
           echo "PR_6 : $PR_6"
           echo "PR_8 : $PR_8"
+          echo "PR_9 : $PR_9"
 
       - name: Dump PR_7
         run: echo "$PR_7"
