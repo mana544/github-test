@@ -7,7 +7,7 @@ jobs:
     name: Run MATLAB Tests and Generate Artifacts
     runs-on: ubuntu-latest
     env:
-      PR_ACT: github.event.pull_request.action
+      PR_ACT: ${{ github.event.pull_request.action }}
     steps:
       - name: Display Info
         run: |
