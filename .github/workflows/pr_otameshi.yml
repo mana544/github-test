@@ -7,14 +7,18 @@ jobs:
     name: Run MATLAB Tests and Generate Artifacts
     runs-on: ubuntu-latest
     env:
-      PR_ACT: ${{ github.event.pull_request.action }}
+      PR_1: ${{ github.event }}
+      PR_2: ${{ github.event.action }}
+      PR_3: ${{ github.event_name }}
     steps:
       - name: Display Info
         run: |
           echo "GITHUB_SHA : $GITHUB_SHA"
           echo "GITHUB_REF : $GITHUB_REF"
           echo "GITHUB_HEAD_REF : $GITHUB_HEAD_REF"
-          echo "PR_ACT : $PR_ACT"
+          echo "PR_1 : $PR_1"
+          echo "PR_2 : $PR_2"
+          echo "PR_3 : $PR_3"
 
 
 
