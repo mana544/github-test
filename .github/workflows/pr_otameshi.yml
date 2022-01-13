@@ -1,0 +1,58 @@
+name: Pull request otameshi
+on:
+  pull_request:
+    branches:
+      - CCC@[0-9]+
+    types: [opened, reopened, closed]
+
+jobs:
+  job1:
+    name: Run MATLAB Tests and Generate Artifacts
+    runs-on: ubuntu-latest
+    env:
+      # プルリクエストイベントactionキーの値(string)
+      # 以下のURLの説明のどれかが入る
+      # 'synchronize' とか
+      # https://docs.github.com/ja/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request
+      PR_2: ${{ github.event.action }}
+
+      # イベント名
+      # このワークフローはpull_requestイベントトリガーなので
+      # 'pull_request' がはいる
+      PR_3: ${{ github.event_name }}
+
+      # PR番号
+      # 正の整数ではいる
+      PR_4: ${{ github.event.number }}
+
+      # イベントトリガーした人のログイン名
+      PR_5: ${{ github.event.sender.login }}
+
+      # イベントトリガーした人のURL
+      PR_6: ${{ github.event.sender.html_url }}
+
+      # senderオブジェクト
+      PR_7: ${{ toJSON(github.event.sender) }}
+
+      # PR URL
+      PR_8: ${{ github.event.pull_request.html_url }}
+
+    steps:
+      - name: Display Info
+        run: |
+          echo "GITHUB_SHA : $GITHUB_SHA"
+          echo "GITHUB_REF : $GITHUB_REF"
+          echo "GITHUB_HEAD_REF : $GITHUB_HEAD_REF"
+          echo "PR_2 : $PR_2"
+          echo "PR_3 : $PR_3"
+          echo "PR_4 : $PR_4"
+          echo "PR_5 : $PR_5"
+          echo "PR_6 : $PR_6"
+          echo "PR_8 : $PR_8"
+
+      - name: Dump PR_7
+        run: echo "$PR_7"
+
+
+
+
