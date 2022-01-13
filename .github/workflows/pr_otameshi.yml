@@ -1,0 +1,21 @@
+name: Pull request otameshi
+on:
+  pull_request:
+
+jobs:
+  job1:
+    name: Run MATLAB Tests and Generate Artifacts
+    runs-on: ubuntu-latest
+    env:
+      PR_ACT: github.event.pull_request.action
+    steps:
+      - name: Display Info
+        run: |
+          echo "GITHUB_SHA : $GITHUB_SHA"
+          echo "GITHUB_REF : $GITHUB_REF"
+          echo "GITHUB_HEAD_REF : $GITHUB_HEAD_REF"
+          echo "PR_ACT : $PR_ACT"
+
+
+
+
