@@ -1,8 +1,10 @@
+# 特定ブランチにpushされたらMATLAB自動テストが走ります。
+# 今は停止中
 name: Run MATLAB Tests
 on:
   push:
     branches:
-      - tmp
+      - STOP
 jobs:
   job1:
     name: Run MATLAB Tests and Generate Artifacts
