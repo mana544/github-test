@@ -58,18 +58,11 @@ jobs:
       - name: Dump PR_7
         run: echo "$PR_7"
 
-      - name: Add comment
-        uses: peter-evans/create-or-update-comment@v1
+      - name: View context attributes
+        uses: actions/github-script@v5
         with:
-          issue-number: ${{ env.PR_4 }}
-          body: |
-            This is a multi-line test comment
-            - With GitHub **Markdown** :sparkles:
-            - Created by [create-or-update-comment][1]
-
-            [1]: https://github.com/peter-evans/create-or-update-comment
-
-
+          script: console.log(context)
+          
 
 
 
