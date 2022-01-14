@@ -62,11 +62,12 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.payload.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '# &#x274c; \n&#x274c;'
-            })
+            // github.rest.issues.createComment({
+            //   issue_number: context.payload.number,
+            //   owner: context.repo.owner,
+            //   repo: context.repo.repo,
+            //   body: '# &#x274c; \n&#x274c;'
+            // })
+            console.log(process.env)
             
 
