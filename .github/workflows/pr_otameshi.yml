@@ -62,15 +62,12 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            console.log(context.repo.owner);
-            console.log(context.repo.repo);
-
-            // github.rest.issues.createComment({
-            //   issue_number: context.payload.number,
-            //   owner: context.repo.owner,
-            //   repo: context.repo.repo,
-            //   body: '👋 Thanks for reporting!'
-            // })          
+            github.rest.issues.createComment({
+              issue_number: context.payload.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for reporting!'
+            })          
 
 
 
