@@ -4,11 +4,11 @@ on:
     # ベースブランチ(マージ先)
     branches:
       - master
-    types: [opened, reopened, closed]
+    # types: [opened, reopened, closed]
 
 jobs:
   job1:
-    name: Run MATLAB Tests and Generate Artifacts
+    name: JOB 1
     runs-on: ubuntu-latest
     env:
       # プルリクエストイベントactionキーの値(string)
@@ -57,6 +57,18 @@ jobs:
 
       - name: Dump PR_7
         run: echo "$PR_7"
+
+      - name: Add comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ env.PR_4 }}
+          body: |
+            This is a multi-line test comment
+            - With GitHub **Markdown** :sparkles:
+            - Created by [create-or-update-comment][1]
+
+            [1]: https://github.com/peter-evans/create-or-update-comment
+
 
 
 
