@@ -61,8 +61,15 @@ jobs:
       - name: View context attributes
         uses: actions/github-script@v5
         with:
-          script: console.log(context)
-          
+          script: |
+            console.log(contrxt.payload.repository.owner);
+
+            // github.rest.issues.createComment({
+            //   issue_number: context.payload.number,
+            //   owner: context.repo.owner,
+            //   repo: context.repo.repo,
+            //   body: '👋 Thanks for reporting!'
+            // })          
 
 
 
