@@ -69,7 +69,7 @@ module.exports = ({github, context}) => {
         }
     ];
 
-    const thru_user = ['mana544'];
+    const thru_user = ['000'];
 
     // メッセージ整形用
     var str = '';
@@ -99,7 +99,7 @@ module.exports = ({github, context}) => {
 
     if (thru_user.includes(usr)) {
         console.log('このPRイベントは \'' + usr + '\' によってトリガーされました。')
-        console.log('チェックスルー対象ユーザのため、このブランチチェックはパスします。')
+        console.log('チェックスルー対象ユーザのため、ブランチチェックはパスします。')
         return;
     }
 

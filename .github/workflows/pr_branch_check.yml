@@ -10,10 +10,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: context dump
+      - name: Check branch
         uses: actions/github-script@v5
         with:
           script: |
-            const script = require('./.github/workflows/pr_branch_check.js');
-            script({github, context});
+            const script = require('./.github/workflows/pr_branch_check.js')
+            script({github, context})
 
