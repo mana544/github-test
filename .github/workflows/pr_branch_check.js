@@ -24,11 +24,11 @@ module.exports = ({github, context}) => {
     ];
 
     // トピックブランチ名
-    // const in_head_ref = process.env.GITHUB_HEAD_REF;
-    const in_head_ref = 'hotfix@1234';
+    const in_head_ref = process.env.GITHUB_HEAD_REF;
+    // const in_head_ref = 'hotfix@1234';
     // マージ先ブランチ名
-    // const in_base_ref = process.env.GITHUB_BASE_REF;
-    const in_base_ref = 'release';
+    const in_base_ref = process.env.GITHUB_BASE_REF;
+    // const in_base_ref = 'release';
     // プルリクNo
     const pr_number = context.payload.number;
     // Repo owner
