@@ -69,6 +69,8 @@ module.exports = ({github, context}) => {
         }
     ];
 
+    const thru_user = ['mana544'];
+
     // メッセージ整形用
     var str = '';
 
@@ -84,6 +86,8 @@ module.exports = ({github, context}) => {
     const owner = context.repo.owner;
     // Repo name
     const repo = context.repo.repo;
+    // PRイベントトリガーユーザ
+    const usr = context.payload.sender.login;
 
     console.log(
         '*** Pull request ブランチチェック ***\n' + 
@@ -92,6 +96,12 @@ module.exports = ({github, context}) => {
         'PR No : ' + pr_number + '\n' +
         'Repository : ' + owner + '/' + repo + ''
     )
+
+    if (thru_user.includes(usr)) {
+        console.log('このPRイベントは \'' + usr + '\' によってトリガーされました。')
+        console.log('チェックスルー対象ユーザのため、このブランチチェックはパスします。')
+        return;
+    }
 
     // '@'で分割
     const li = in_head_ref.split('@');
