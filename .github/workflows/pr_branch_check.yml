@@ -38,6 +38,7 @@ jobs:
       PR_9: ${{ github.event.pull_request.base.ref }}
 
     steps:
+      - uses: actions/checkout@v2
       - name: Check branch
         uses: actions/github-script@v5
         with:
