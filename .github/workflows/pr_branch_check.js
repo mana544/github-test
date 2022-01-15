@@ -54,7 +54,7 @@ module.exports = ({github, context}) => {
         str += 'トピックブランチ名 `' + in_head_ref + '` は、想定された名前ではありません。\n';
         str += '下記の命名ルールを確認して下さい。\n';
         str += '* トピックブランチ名は `PREFIX@NUM` という書式であること\n';
-        str += '  * `PREFIX` は ' + verif.map(t => '`'+t.head_ref_prefix+'`').join(', ') +' のいずれかであること\nß';
+        str += '  * `PREFIX` は ' + verif.map(t => '`'+t.head_ref_prefix+'`').join(', ') +' のいずれかであること\n';
         str += '  * `NUM` は、このトピックブランチに紐付くRedmineチケットの番号であること\n(チケット未起票のPRは認めません)';
         // PRにエラーコメント投げる
         github.rest.issues.createComment({
