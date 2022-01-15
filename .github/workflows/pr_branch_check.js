@@ -151,6 +151,8 @@ module.exports = ({github, context}) => {
         str += '* トピックブランチ名は `PREFIX@NUM` という書式であること\n';
         str += '  * `PREFIX` は ' + verif.map(t => '`'+t.head_ref_prefix+'`').join(', ') +' のいずれかであること\nß';
         str += '  * `NUM` は、このトピックブランチに紐付くRedmineチケットの番号であること\n(チケット未起票のPRは認めません)';
+        str += '\n';
+        str += '[Action #'+ run_number +'](https://github.com/'+ owner +'/'+ repo +'/actions/runs/'+ run_id +')\n';
         // PRにエラーコメント投げる
         github.rest.issues.createComment({
             issue_number: pr_number,
@@ -173,6 +175,8 @@ module.exports = ({github, context}) => {
         str += '現在、マージ先ブランチ名が `'+ in_base_ref +'` に設定されています。\n';
         str += 'このPRのトピックブランチ名は `'+ in_head_ref +'` なので、';
         str += 'マージ先ブランチ名は '+ verif_base_ref.map(t => '`'+t+'`').join(' or ') +' でなければいけません。\n';
+        str += '\n';
+        str += '[Action #'+ run_number +'](https://github.com/'+ owner +'/'+ repo +'/actions/runs/'+ run_id +')\n';
         // PRにエラーコメント投げる
         github.rest.issues.createComment({
             issue_number: pr_number,
