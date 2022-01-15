@@ -1,10 +1,8 @@
-module.exports = ({github, context, env}) => {
-    context.payload.client_payload.value
-
+module.exports = ({github, context}) => {
     // トピックブランチ名
-    const in_head_ref = env.GITHUB_HEAD_REF;
+    const in_head_ref = process.env.GITHUB_HEAD_REF;
     // マージ先ブランチ名
-    const in_base_ref = env.GITHUB_BASE_REF;
+    const in_base_ref = process.env.GITHUB_BASE_REF;
     // プルリクNo
     const pr_number = context.payload.number;
     // owner
