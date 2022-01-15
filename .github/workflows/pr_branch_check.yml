@@ -43,5 +43,5 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const script = require('./ota.js')
+            const script = require('./.github/workflows/ota.js')
             console.log(script({github, context}))
