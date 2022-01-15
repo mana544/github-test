@@ -1,10 +1,56 @@
 module.exports = ({github, context}) => {
-
     /*
-    head_ref_prefix
+    Pull request ブランチチェックスクリプト
+
+    Pull requestにおいて、以下のブランチチェックを行い、
+    不整合があったらエラー送出&プルリクコメントを出します。
+    * トピックブランチ(Compare branch)名の整合性チェック
+        * ブランチ名が 'PREFIX@NUM' という書式になっているか
+            * '@'で分割したときに2要素リストが生成できるか
+        * 'PREFIX' 文字が、verif[*].head_ref_prefix に
+        定義されているものと一致するか
+    * マージ先ブランチ名(Base branch)の整合性チェック
+        * 'PREFIX'が一致したvrif[*].base_ref のリストと、
+        マージ先ブランチ名が一致するか
+
+    usage
+    -----
+    このスクリプトはGitHub Actions(actions/github-script@v5)
+    を使うことを前提としています。
+    また、ワークフロー側でPRイベントをトリガーすることが前提です。
+    GitHub Actions外からの呼び出しや、PR以外のイベントトリガーで
+    呼び出されると、予期しない挙動になります。
+    ```yaml
+    name: PR Branch check
+    on:
+    pull_request:
+        types: [opened, reopened, synchronize, edited]
+
+    jobs:
+    job1:
+        name: Check job
+        runs-on: ubuntu-latest
+
+        steps:
+        - uses: actions/checkout@v2
+        - name: Check branch
+            uses: actions/github-script@v5
+            with:
+            script: |
+                const script = require('./path/to/pr_branch_check.js')
+                script({github, context})
+    ```
+
+    settings
+    --------
+    verif には、ブランチ運用実態に合わせてネーミングルールを記述して下さい。
+    globとか正規表現みたいなパターンマッチはしていませんが、
+    配列でいくつでも定義可能です。
+
+    verif[*].head_ref_prefix
         トピックブランチ側のprefix名。
         '@'より前の名前。
-    base_ref
+    verif[*].base_ref[*]
         マージ先ブランチ側の名前。
         配列で指定(複数指定可)
     */
@@ -22,6 +68,9 @@ module.exports = ({github, context}) => {
             base_ref : ['hotfix', 'release']
         }
     ];
+
+    // メッセージ整形用
+    var str = '';
 
     // トピックブランチ名
     const in_head_ref = process.env.GITHUB_HEAD_REF;
@@ -43,9 +92,6 @@ module.exports = ({github, context}) => {
         'PR No : ' + pr_number + '\n' +
         'Repository : ' + owner + '/' + repo + ''
     )
-
-    // メッセージ整形用
-    var str = '';
 
     // '@'で分割
     const li = in_head_ref.split('@');
