@@ -1,7 +1,7 @@
 name: PR Branch check
 on:
   pull_request:
-    types: [opened, reopened, synchronize, edited]
+    types: [opened, reopened, edited]
 
 jobs:
   job1:
