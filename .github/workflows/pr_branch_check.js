@@ -44,11 +44,27 @@ module.exports = ({github, context}) => {
         'Repository : ' + owner + '/' + repo + ''
     )
 
+    // メッセージ整形用
+    var str = '';
+
     // '@'で分割
     const li = in_head_ref.split('@');
     if (li.length != 2) {
+        str = '## &#x274c; トピックブランチ(Compare branch)の名前が不正です\n';
+        str += 'トピックブランチ名 `' + in_head_ref + '` は、想定された名前ではありません。\n';
+        str += '下記の命名ルールを確認して下さい。\n';
+        str += '* トピックブランチ名は `PREFIX@NUM` という書式であること\n';
+        str += '  * `PREFIX` は ' + verif.map(t => '`'+t.head_ref_prefix+'`').join(', ') +' のいずれかであること';
+        str += '  * `NUM` は、このトピックブランチに紐付くRedmineチケットの番号であること\n(チケット未起票のPRは認めません)';
+        // PRにエラーコメント投げる
+        github.rest.issues.createComment({
+            issue_number: pr_number,
+            owner: owner,
+            repo: repo,
+            body: str
+        })
         // Error送出
-        str = 'トピックブランチ名解析に失敗しました。\n';
+        str = 'トピックブランチ名解析に失敗しました。';
         str += 'トピックブランチ名 \'' + in_head_ref + '\' を';
         str += '\'@\'分割した結果、要素数が ' + li.length + ' でした。';
         str += '(2でなければいけません)';
@@ -61,7 +77,7 @@ module.exports = ({github, context}) => {
     const verif_base_ref = verify_head_ref(verif, in_head_ref_prefix);
     if (!verif_base_ref.length) {
         // Error送出
-        str = 'トピックブランチ名解析に失敗しました。\n';
+        str = 'トピックブランチ名解析に失敗しました。';
         str += 'トピックブランチ プレフィックス名 \'' + in_head_ref_prefix + '\' が';
         str += '定義リストにありません。';
         throw str;
@@ -72,7 +88,7 @@ module.exports = ({github, context}) => {
     // ベースブランチ名の検索
     if (!verif_base_ref.includes(in_base_ref)) {
         // Error送出
-        str = 'マージ先ブランチ(Base branch)が違います\n';
+        str = 'マージ先ブランチ(Base branch)が違います';
         str += '現在、マージ先ブランチ名が \'' + in_base_ref + '\' に設定されています。';
         str += 'このPRのトピックブランチ名は \'' + in_head_ref + '\' なので、';
         str += 'マージ先ブランチ名は ' + verif_base_ref.map(t => '\''+t+'\'').join(' or ') + ' でなければいけません。';
@@ -103,5 +119,3 @@ function verify_head_ref(verif, in_head_ref_prefix) {
     }
     return bref_list
 }
-
-
