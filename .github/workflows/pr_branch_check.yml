@@ -2,6 +2,7 @@ name: PR Branch check
 on:
   pull_request:
     types: [opened, reopened, synchronize, edited]
+    branches-ignore: [aaa]
 
 jobs:
   job1:
