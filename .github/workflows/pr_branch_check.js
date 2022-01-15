@@ -20,25 +20,7 @@ module.exports = ({github, context}) => {
     また、ワークフロー側でPRイベントをトリガーすることが前提です。
     GitHub Actions外からの呼び出しや、PR以外のイベントトリガーで
     呼び出されると、予期しない挙動になります。
-    ```yaml
-    name: PR Branch check
-    on:
-    pull_request:
-        types: [opened, reopened, synchronize, edited]
-
-    jobs:
-    job1:
-        name: Check job
-        runs-on: ubuntu-latest
-
-        steps:
-        - uses: actions/checkout@v2
-        - name: Check branch
-            uses: actions/github-script@v5
-            with:
-            script: |
-                const script = require('./path/to/pr_branch_check.js')
-                script({github, context})
+    pr_branch_check.yml も参照して下さい。
     ```
 
     settings
@@ -69,6 +51,10 @@ module.exports = ({github, context}) => {
         }
     ];
 
+    // チェック無条件パス ユーザの定義
+    // PRイベントトリガーのユーザ名をチェックし、
+    // ここに定義したユーザ名と合致する場合は、Passして終了します。
+    // (ブランチチェックを行いません)
     const thru_user = ['000'];
 
     // メッセージ整形用
