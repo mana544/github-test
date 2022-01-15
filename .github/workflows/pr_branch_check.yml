@@ -44,4 +44,4 @@ jobs:
         with:
           script: |
             const script = require('./.github/workflows/ota.js')
-            console.log(script({github, context}))
+            script({github, context})

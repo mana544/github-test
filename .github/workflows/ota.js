@@ -1,3 +1,4 @@
 module.exports = ({github, context}) => {
-    return context.payload.number
+    return 
+    console.log(context.payload.number)
 }
