@@ -2,7 +2,6 @@ name: PR Branch check
 on:
   pull_request:
     types: [opened, reopened, synchronize, edited]
-    branches-ignore: [aaa]
 
 jobs:
   job1:
@@ -11,10 +10,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Check branch
+      - name: context dump
         uses: actions/github-script@v5
         with:
           script: |
-            const script = require('./.github/workflows/pr_branch_check.js')
-            script({github, context})
+            // const script = require('./.github/workflows/pr_branch_check.js');
+            // script({github, context});
+            console.log(context)
 
