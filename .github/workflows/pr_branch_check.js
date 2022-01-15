@@ -5,13 +5,14 @@ module.exports = ({github, context}) => {
     Pull requestにおいて、以下のブランチチェックを行い、
     不整合があったらエラー送出&プルリクコメントを出します。
     * トピックブランチ(Compare branch)名の整合性チェック
-        * ブランチ名が 'PREFIX@NUM' という書式になっているか
-            * '@'で分割したときに2要素リストが生成できるか
-        * 'PREFIX' 文字が、verif[*].head_ref_prefix に
+      * ブランチ名が 'PREFIX@NUM' という書式になっているか
+        * '@'で分割したときに2要素リストが生成できるか
+      * 'PREFIX' 文字が、verif[*].head_ref_prefix に
         定義されているものと一致するか
     * マージ先ブランチ名(Base branch)の整合性チェック
-        * 'PREFIX'が一致したvrif[*].base_ref のリストと、
+      * 'PREFIX'と一致したvrif[*].base_ref のリストと、
         マージ先ブランチ名が一致するか
+
 
     usage
     -----
@@ -21,7 +22,25 @@ module.exports = ({github, context}) => {
     GitHub Actions外からの呼び出しや、PR以外のイベントトリガーで
     呼び出されると、予期しない挙動になります。
     pr_branch_check.yml も参照して下さい。
-    ```
+
+    
+    Definition of branch
+    --------------------
+
+    o    <== approved PR commit (merged into base branch)
+    |\ 
+    | o  <== pull_request target commit (right branch)
+    o    <== merge base commit (left branch)
+
+    * 左側のブランチ(into)
+      * Base branch
+      * マージ先ブランチ
+    * 右側のブランチ(from)
+      * Compare branch
+      * HEAD branch
+      * トピックブランチ
+      * プルリク対象のブランチ
+    
 
     settings
     --------
@@ -74,6 +93,10 @@ module.exports = ({github, context}) => {
     const repo = context.repo.repo;
     // PRイベントトリガーユーザ
     const usr = context.payload.sender.login;
+    // Actions run No
+    const run_number = context.runNumber;
+    // Actions run ID
+    const run_id = context.runId;
 
     console.log(
         '*** Pull request ブランチチェック ***\n' + 
@@ -97,7 +120,10 @@ module.exports = ({github, context}) => {
         str += '下記の命名ルールを確認して下さい。\n';
         str += '* トピックブランチ名は `PREFIX@NUM` という書式であること\n';
         str += '  * `PREFIX` は ' + verif.map(t => '`'+t.head_ref_prefix+'`').join(', ') +' のいずれかであること\n';
-        str += '  * `NUM` は、このトピックブランチに紐付くRedmineチケットの番号であること\n(チケット未起票のPRは認めません)';
+        str += '  * `NUM` は、このトピックブランチに紐付くRedmineチケットの番号であること\n(チケット未起票のPRは認めません)\n';
+        str += '\n';
+        str += '[Action #'+ run_number +'](https://github.com/'+ owner +'/'+ repo +'/actions/runs/'+ run_id +')\n';
+
         // PRにエラーコメント投げる
         github.rest.issues.createComment({
             issue_number: pr_number,
