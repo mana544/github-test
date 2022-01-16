@@ -3,12 +3,13 @@ on:
   pull_request:
     # ベースブランチ(マージ先)
     branches:
-      - master
-    types: [opened, reopened, closed]
+      # - master
+      - XXX
+    # types: [opened, reopened, closed]
 
 jobs:
   job1:
-    name: Run MATLAB Tests and Generate Artifacts
+    name: JOB 1
     runs-on: ubuntu-latest
     env:
       # プルリクエストイベントactionキーの値(string)
@@ -38,6 +39,9 @@ jobs:
       # PR URL
       PR_8: ${{ github.event.pull_request.html_url }}
 
+      # base ref
+      PR_9: ${{ github.event.pull_request.base.ref }}
+
     steps:
       - name: Display Info
         run: |
@@ -50,10 +54,21 @@ jobs:
           echo "PR_5 : $PR_5"
           echo "PR_6 : $PR_6"
           echo "PR_8 : $PR_8"
+          echo "PR_9 : $PR_9"
 
       - name: Dump PR_7
         run: echo "$PR_7"
 
-
-
+      - name: View context attributes
+        uses: actions/github-script@v5
+        with:
+          script: |
+            // github.rest.issues.createComment({
+            //   issue_number: context.payload.number,
+            //   owner: context.repo.owner,
+            //   repo: context.repo.repo,
+            //   body: '# &#x274c; \n&#x274c;'
+            // })
+            console.log(process.env)
+            
 
