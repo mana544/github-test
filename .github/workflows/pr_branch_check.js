@@ -45,28 +45,40 @@ module.exports = ({github, context}) => {
     settings
     --------
     verif には、ブランチ運用実態に合わせてネーミングルールを記述して下さい。
-    globとか正規表現みたいなパターンマッチはしていませんが、
     配列でいくつでも定義可能です。
 
-    verif[*].head_ref_prefix
+    verif[*].head_ref_prefix : string
         トピックブランチ側のprefix名。
         '@'より前の名前。
-    verif[*].base_ref[*]
+        トピックブランチ プレフィックス名は、完全一致を要求します。
+    verif[*].base_ref[*] : Array[RegExp]
         マージ先ブランチ側の名前。
         配列で指定(複数指定可)
+        マージ先ブランチ名は、正規表現一致を要求します。
+        配列のどれか一つでも正規表現一致したらパスします。
     */
     const verif = [
         {
             head_ref_prefix : 'feature',
-            base_ref : ['feature']
+            base_ref : [
+                /^feature$/, 
+                /^feature@[0-9]+$/
+            ]
         },
         {
             head_ref_prefix : 'feature-NewArch',
-            base_ref : ['feature-NewArch']
+            base_ref : [
+                /^feature-NewArch$/,
+                /^feature-NewArch@[0-9]+$/
+            ]
         },
         {
             head_ref_prefix : 'hotfix',
-            base_ref : ['hotfix', 'release']
+            base_ref : [
+                /^hotfix$/,
+                /^hotfix@[0-9]+$/,
+                /^release$/
+            ]
         }
     ];
 
@@ -170,7 +182,7 @@ module.exports = ({github, context}) => {
     }
     
     // ベースブランチ名の検索
-    if (!verif_base_ref.includes(in_base_ref)) {
+    if (!verif_base_ref.some(r => r.test(in_base_ref))) {
         str = '## &#x274c; マージ先ブランチ(Base branch)が違います\n';
         str += '現在、マージ先ブランチ名が `'+ in_base_ref +'` に設定されています。\n';
         str += 'このPRのトピックブランチ名は `'+ in_head_ref +'` なので、';
