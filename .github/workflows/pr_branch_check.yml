@@ -1,7 +1,7 @@
 name: PR Branch check
 on:
   pull_request:
-    types: [opened, reopened, synchronize, edited]
+    types: [opened, reopened, edited]
 
 jobs:
   job1:
@@ -14,6 +14,6 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const script = require('./.github/workflows/pr_branch_check.js')
-            script({github, context})
+            const check_branch = require('./.github/workflows/pr_branch_check.js');
+            check_branch({github, context});
 
