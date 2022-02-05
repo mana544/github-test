@@ -1,19 +1,15 @@
-name: PR Branch check
+name: check pull_request branch name
 on:
+  # Only 'pull_request' event is supported for this action
   pull_request:
-    types: [opened, reopened, edited]
+    types: [opened, edited, reopened, synchronize]
 
 jobs:
-  job1:
-    name: Check job
+  prcheck-job:
     runs-on: ubuntu-latest
-
+    name: check PR branch name
     steps:
-      - uses: actions/checkout@v2
-      - name: Check branch
-        uses: actions/github-script@v5
-        with:
-          script: |
-            const check_branch = require('./.github/workflows/pr_branch_check.js');
-            check_branch({github, context});
+      # Check branch name action step
+      - name: check PR branch name
+        uses: mana544/check-pr-ref-name@v1
 
