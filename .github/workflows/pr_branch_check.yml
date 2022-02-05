@@ -11,5 +11,7 @@ jobs:
     steps:
       # Check branch name action step
       - name: check PR branch name
-        uses: mana544/check-pr-ref-name@v1
+        uses: mana544/check-pr-ref-name@release
+        with:
+          no-elem-headref: 'qux'
 
