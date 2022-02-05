@@ -13,5 +13,5 @@ jobs:
       - name: check PR branch name
         uses: mana544/check-pr-ref-name@release
         with:
-          no-elem-headref: 'qux'
+          no-elem-headref: 'pass'
 
