@@ -9,4 +9,3 @@ jobs:
       # Check branch name action step
       - name: sync pr to rm
         uses: mana544/sync-pr-to-redmine@develop
-
