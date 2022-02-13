@@ -1,0 +1,12 @@
+name: sync pr to rm
+on: push
+
+jobs:
+  prcheck-job:
+    runs-on: ubuntu-latest
+    name: sync pr to rm
+    steps:
+      # Check branch name action step
+      - name: sync pr to rm
+        uses: mana544/sync-pr-to-redmine@develop
+
